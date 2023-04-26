@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="hook.js"></script>
+<script>
+    window.addEventListener("load", function() {
+        var q = location.hash.substring(1);
+        window.query.innerHTML = q == '' ? `Hello!` : (`Hello, ${decodeURI(q)}`);
+    });
+</script>
+
+<br>
+window.addEventListener("load", function() {
+var q = location.hash.substring(1);
+window.query.innerHTML = q == '' ? `Hello!` : (`Hello, ${decodeURI(q)}`);
+});
+</br>
+
+
+<br>
+    這裏要注意到location.hash.substring(1)
+</br>
+<br>
+    它取了URL中第一個的hash值，例如https://XXX.tw/#kk，那麽這個值就是kk
+</br>
+<br>
+    同時這裏采取了非常危險的innerHTML函式
+
+</br>
+<br>
+    那麽decodeURI是什麽呢?
+    參見MDN上的敘述 :The decodeURI() function decodes a Uniform Resource Identifier (URI) previously created by encodeURI() or a similar routine.
+
+</br>
+<br>
+    因此我們要把payload字串經過encodeURI()處理再傳入
+</br>
+
+<h1>這裏是query注入點</h1>
+<p id="query" style="background-color: cyan;color:black;font-size:15px;width:130px;height:30px" ></p>
+<br>底下是我的Payload</br>
+<script>
+    document.write(encodeURI("<img src='3.jpg' onerror='alert(\"XSS\")'>"))
+</script>
+<br>現在在這個頁面的url后面加上#payload就達成攻擊了 :D </br>
+
+</body>
+</html>
